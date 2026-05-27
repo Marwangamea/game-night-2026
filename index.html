@@ -382,11 +382,7 @@
         <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email">
         <span class="field-error" id="err-email">Please enter a valid email</span>
       </div>
-      <div class="form-group">
-        <label class="form-label">Phone number</label>
-        <input type="tel" id="reg-phone" placeholder="+20 100 000 0000" autocomplete="tel">
-        <span class="field-error" id="err-phone">Please enter your phone number</span>
-      </div>
+
       <div id="dupError" style="display:none;font-size:0.82rem;color:var(--red);margin-bottom:0.5rem;padding:0.6rem 0.9rem;background:rgba(224,84,84,0.08);border:1px solid rgba(224,84,84,0.25);border-radius:8px;"></div>
       <button class="btn-primary" id="step1NextBtn" onclick="goToQuiz()">Next — Take the Quiz →</button>
     </div>
@@ -436,6 +432,10 @@
         <h2 class="success-title">You're In!</h2>
         <p class="success-text" id="successText"></p>
         <div class="success-email-note">📧 A confirmation email with your score is on its way.<br>Check your inbox (and spam, just in case).</div>
+        <div style="margin-top:1.5rem;padding:1.25rem;background:var(--surface);border:1px solid var(--border-gold);border-radius:14px;text-align:center;">
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.85rem;">While you wait for game night — there are pre-game challenges you can start completing for bonus points 👀</p>
+          <button onclick="document.querySelectorAll('.nav-tab')[1].click()" style="background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:0.75rem 1.75rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;">Check out the Challenges →</button>
+        </div>
       </div>
     </div>
   </section>
@@ -833,31 +833,30 @@
   }
 
   async function goToQuiz() {
-    const name = document.getElementById('reg-name').value.trim();
+    const name  = document.getElementById('reg-name').value.trim();
     const email = document.getElementById('reg-email').value.trim();
-    const phone = document.getElementById('reg-phone').value.trim();
     document.getElementById('err-name').classList.toggle('show', !name);
     document.getElementById('err-email').classList.toggle('show', !email || !email.includes('@'));
-    document.getElementById('err-phone').classList.toggle('show', !phone);
     const noPhoto = !avatarFile;
     document.getElementById('avatarPreview').classList.toggle('error', noPhoto);
     document.getElementById('photoError').classList.toggle('show', noPhoto);
-    if (!name || !email || !email.includes('@') || !phone || noPhoto) return;
+    if (!name || !email || !email.includes('@') || noPhoto) return;
 
     // Check for duplicates
     const dupBtn = document.getElementById('step1NextBtn');
     dupBtn.disabled = true;
     dupBtn.textContent = 'Checking…';
     try {
-      const params = new URLSearchParams({ select: 'name,email,phone', or: `(name.eq.${encodeURIComponent(name)},email.eq.${encodeURIComponent(email)},phone.eq.${encodeURIComponent(phone)})` });
-      const res = await fetch(`${SB_URL}/rest/v1/rsvps?${params}`, { headers: HEADERS });
+      const res = await fetch(
+        `${SB_URL}/rest/v1/rsvps?select=name,email&or=(name.ilike.${encodeURIComponent(name)},email.ilike.${encodeURIComponent(email)})`,
+        { headers: HEADERS }
+      );
       const existing = await res.json();
       if (existing && existing.length > 0) {
         const match = existing[0];
         let msg = 'Looks like you already registered!';
-        if (match.email === email) msg = 'This email is already registered. Already signed up?';
-        else if (match.phone === phone) msg = 'This phone number is already registered.';
-        else if (match.name.toLowerCase() === name.toLowerCase()) msg = 'This name is already taken. Use your full name.';
+        if (match.email?.toLowerCase() === email.toLowerCase()) msg = 'This email is already registered. Already signed up?';
+        else if (match.name?.toLowerCase() === name.toLowerCase()) msg = 'This name is already taken. Use your full name.';
         document.getElementById('dupError').textContent = msg;
         document.getElementById('dupError').style.display = 'block';
         dupBtn.disabled = false;
@@ -866,7 +865,6 @@
       }
       document.getElementById('dupError').style.display = 'none';
     } catch(e) {
-      // If check fails, allow through — don't block registration
       console.warn('Duplicate check failed:', e);
     }
     dupBtn.disabled = false;
@@ -1036,7 +1034,6 @@
     try {
       const name  = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
-      const phone = document.getElementById('reg-phone').value.trim();
 
       let avatar_url = null;
       if (avatarFile) {
@@ -1053,7 +1050,7 @@
       const insRes = await fetch(`${SB_URL}/rest/v1/rsvps`, {
         method: 'POST',
         headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ name, email, phone, avatar_url, coming: true, quiz_score: quizScore, quiz_answers: answers })
+        body: JSON.stringify({ name, email, avatar_url, coming: true, quiz_score: quizScore, quiz_answers: answers })
       });
       if (!insRes.ok) { const e = await insRes.json(); throw new Error(e.message || 'Registration failed'); }
 
