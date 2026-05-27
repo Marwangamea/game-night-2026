@@ -254,6 +254,36 @@
     .pslide { width: 185px; }
     .pslide img { height: 160px; }
   }
+
+  /* ADMIN + LEADERBOARD */
+  .pt-sel { padding: 0.45rem 1.1rem; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .pt-sel.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); font-weight: 500; }
+  .admin-team-block { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .admin-team-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border); }
+  .admin-team-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .admin-team-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em; flex: 1; }
+  .admin-team-total { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); }
+  .admin-team-pts-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.1rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+  .admin-team-pts-label { font-size: 0.8rem; color: var(--muted); flex: 1; }
+  .admin-pts-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--cream); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
+  .admin-pts-btn.plus:active { background: rgba(61,186,122,0.2); }
+  .admin-pts-btn.minus:active { background: rgba(224,84,84,0.15); }
+  .admin-pts-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; min-width: 3ch; text-align: center; }
+  .admin-player-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .admin-player-row:last-child { border-bottom: none; }
+  .admin-player-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .admin-player-fallback { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 0.75rem; color: var(--ink); flex-shrink: 0; }
+  .admin-player-name { flex: 1; font-size: 0.88rem; color: var(--cream); }
+  .admin-player-pts { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; min-width: 3ch; text-align: center; color: var(--cream); }
+  .lb-team-card { border-radius: 14px; border: 1px solid var(--border); background: var(--surface); padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: 1rem; transition: border-color 0.2s; }
+  .lb-team-rank { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: rgba(240,235,224,0.2); min-width: 2ch; }
+  .lb-team-rank.gold { color: #C9A84C; }
+  .lb-team-rank.silver { color: #A0A0A0; }
+  .lb-team-rank.bronze { color: #C17A4A; }
+  .lb-team-info { flex: 1; }
+  .lb-team-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+  .lb-team-members { font-size: 0.75rem; color: var(--muted); }
+  .lb-team-score { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; }
 </style>
 </head>
 <body>
@@ -267,6 +297,7 @@
       <button class="nav-tab" onclick="switchTab('challenges', this)">Challenges</button>
       <button class="nav-tab" onclick="switchTab('teams', this)">Teams</button>
       <button class="nav-tab" onclick="switchTab('leaderboard', this)">Leaderboard</button>
+      <button class="nav-tab" onclick="switchTab('admin', this)">⚙️ Admin</button>
     </div>
   </nav>
 
@@ -575,14 +606,74 @@
 
   <!-- TAB: LEADERBOARD -->
   <div class="tab-page" id="tab-leaderboard">
-    <section style="padding:4rem 1.5rem;max-width:700px;margin:0 auto;text-align:center;">
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5rem);color:var(--cream);margin-bottom:0.4rem;">Leaderboard</h2>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:2.5rem;">Live scores updated each round</p>
-      <div id="lbContent" style="display:flex;flex-direction:column;gap:0.5rem;">
-        <div class="loading-row"><div class="spinner"></div> Coming soon on game night…</div>
+    <section style="padding:1rem 1.5rem 5rem;max-width:700px;margin:0 auto;">
+
+      <!-- Lock -->
+      <div id="lbLocked" style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🏆</div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--cream);margin-bottom:0.4rem;">Leaderboard</h2>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;">Host access only</p>
+        <div style="max-width:300px;margin:0 auto;display:flex;flex-direction:column;gap:0.75rem;">
+          <input type="password" id="lbPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')unlockLb()" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:16px;outline:none;width:100%;">
+          <button onclick="unlockLb()" style="background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:0.9rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;touch-action:manipulation;">Unlock →</button>
+          <span id="lbPwErr" style="font-size:0.8rem;color:var(--red);display:none;">Wrong password.</span>
+        </div>
       </div>
+
+      <!-- Content -->
+      <div id="lbUnlocked" style="display:none;">
+        <div style="text-align:center;margin-bottom:1.5rem;padding-top:1rem;">
+          <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Live standings</p>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,4.5rem);color:var(--cream);">Leaderboard</h2>
+        </div>
+        <div id="lbTeams" style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div class="loading-row"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+
     </section>
   </div><!-- /tab-leaderboard -->
+
+  <!-- TAB: ADMIN -->
+  <div class="tab-page" id="tab-admin">
+    <section style="padding:1rem 1.5rem 5rem;max-width:700px;margin:0 auto;">
+
+      <!-- Lock -->
+      <div id="adminLocked" style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">⚙️</div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--cream);margin-bottom:0.4rem;">Admin Panel</h2>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;">Host access only</p>
+        <div style="max-width:300px;margin:0 auto;display:flex;flex-direction:column;gap:0.75rem;">
+          <input type="password" id="adminPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')unlockAdmin()" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:16px;outline:none;width:100%;">
+          <button onclick="unlockAdmin()" style="background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:0.9rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;touch-action:manipulation;">Unlock →</button>
+          <span id="adminPwErr" style="font-size:0.8rem;color:var(--red);display:none;">Wrong password.</span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div id="adminUnlocked" style="display:none;">
+        <div style="text-align:center;margin-bottom:1.5rem;padding-top:1rem;">
+          <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Points control</p>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.5rem);color:var(--cream);">Admin Panel</h2>
+        </div>
+
+        <!-- Point increment selector -->
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center;">
+          <p style="width:100%;text-align:center;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem;">Point value</p>
+          <button class="pt-sel active" onclick="setPtVal(5,this)">+5</button>
+          <button class="pt-sel" onclick="setPtVal(10,this)">+10</button>
+          <button class="pt-sel" onclick="setPtVal(50,this)">+50</button>
+          <button class="pt-sel" onclick="setPtVal(100,this)">+100</button>
+        </div>
+
+        <!-- Teams + players -->
+        <div id="adminTeams" style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="loading-row"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+
+    </section>
+  </div><!-- /tab-admin -->
 
 </div>
 
@@ -590,7 +681,7 @@
   const SB_URL = 'https://vkpfduhlceyojjjzqwpa.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrcGZkdWhsY2V5b2pqanpxd3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4MjU4ODIsImV4cCI6MjA5NTQwMTg4Mn0.vQAaon0leqKT3lzifQuF2xKFXpLA0fMIH7BKxHEiyi4';
   const HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-  const HOST_PASSWORD = 'haridymarwan';
+  const HOST_PASSWORD = 'rex';
 
   // ── TAB SWITCHING ──
   function switchTab(name, btn) {
@@ -1283,6 +1374,166 @@
     window.addEventListener('resize', () => setPos(visOf(cur), false));
   })();
 
+
+  // ── LEADERBOARD ──
+  function unlockLb() {
+    const val = document.getElementById('lbPassword').value;
+    if (val !== HOST_PASSWORD) { document.getElementById('lbPwErr').style.display = 'block'; return; }
+    document.getElementById('lbLocked').style.display = 'none';
+    document.getElementById('lbUnlocked').style.display = 'block';
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 10000);
+  }
+
+  async function loadLeaderboard() {
+    try {
+      const [playersRes, teamsRes] = await Promise.all([
+        fetch(`${SB_URL}/rest/v1/rsvps?select=name,avatar_url,team,bonus_points&order=team.asc`, { headers: HEADERS }),
+        fetch(`${SB_URL}/rest/v1/teams?select=id,name,color,team_bonus&order=id.asc`, { headers: HEADERS })
+      ]);
+      const players = await playersRes.json();
+      const teams   = await teamsRes.json();
+
+      // Calculate totals
+      const teamData = teams.map(t => {
+        const members = players.filter(p => p.team === t.id);
+        const playerPts = members.reduce((s, p) => s + (p.bonus_points || 0), 0);
+        const total = playerPts + (t.team_bonus || 0);
+        return { ...t, members, playerPts, total };
+      });
+      teamData.sort((a, b) => b.total - a.total);
+
+      const rankClasses = ['gold', 'silver', 'bronze', ''];
+      const medals = ['🥇', '🥈', '🥉', '4️⃣'];
+      document.getElementById('lbTeams').innerHTML = teamData.map((t, i) => `
+        <div class="lb-team-card" style="border-color:${t.color}33;">
+          <span class="lb-team-rank ${rankClasses[i]}">${medals[i]}</span>
+          <div class="lb-team-info">
+            <p class="lb-team-name" style="color:${t.color}">${t.name}</p>
+            <p class="lb-team-members">${t.members.map(p => p.name.split(' ')[0]).join(', ') || 'No players'}</p>
+          </div>
+          <span class="lb-team-score" style="color:${t.color}">${t.total}</span>
+        </div>`).join('');
+    } catch(e) {
+      document.getElementById('lbTeams').innerHTML = '<div class="loading-row" style="color:var(--red)">Could not load leaderboard</div>';
+    }
+  }
+
+  // ── ADMIN ──
+  let adminPtVal = 5;
+  let adminData = { players: [], teams: [] };
+
+  function unlockAdmin() {
+    const val = document.getElementById('adminPassword').value;
+    if (val !== HOST_PASSWORD) { document.getElementById('adminPwErr').style.display = 'block'; return; }
+    document.getElementById('adminLocked').style.display = 'none';
+    document.getElementById('adminUnlocked').style.display = 'block';
+    loadAdmin();
+  }
+
+  function setPtVal(v, btn) {
+    adminPtVal = v;
+    document.querySelectorAll('.pt-sel').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  async function loadAdmin() {
+    try {
+      const [playersRes, teamsRes] = await Promise.all([
+        fetch(`${SB_URL}/rest/v1/rsvps?select=id,name,avatar_url,team,bonus_points&order=team.asc`, { headers: HEADERS }),
+        fetch(`${SB_URL}/rest/v1/teams?select=id,name,color,team_bonus&order=id.asc`, { headers: HEADERS })
+      ]);
+      adminData.players = await playersRes.json();
+      adminData.teams   = await teamsRes.json();
+      renderAdmin();
+    } catch(e) {
+      document.getElementById('adminTeams').innerHTML = '<div class="loading-row" style="color:var(--red)">Could not load data</div>';
+    }
+  }
+
+  function renderAdmin() {
+    const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'White',color:'#D0CCC4'}, 4:{name:'Green',color:'#3DBA7A'} };
+    const el = document.getElementById('adminTeams');
+    el.innerHTML = [1,2,3,4].map(tid => {
+      const team = adminData.teams.find(t => t.id === tid) || { team_bonus: 0 };
+      const meta = TEAM_META[tid];
+      const members = adminData.players.filter(p => p.team === tid);
+      const playerPts = members.reduce((s, p) => s + (p.bonus_points || 0), 0);
+      const total = playerPts + (team.team_bonus || 0);
+      const playersHtml = members.length ? members.map(p => {
+        const ini = p.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+        const av = p.avatar_url
+          ? `<img class="admin-player-avatar" src="${p.avatar_url}" onerror="this.style.display='none'">`
+          : `<div class="admin-player-fallback" style="background:${meta.color};color:${tid===2||tid===3?'#0D0C0A':'#fff'}">${ini}</div>`;
+        return `<div class="admin-player-row">
+          ${av}
+          <span class="admin-player-name">${p.name}</span>
+          <button class="admin-pts-btn minus" onclick="adjustPlayer('${p.id}',-1)">−</button>
+          <span class="admin-pts-val" id="pp-${p.id}">${p.bonus_points||0}</span>
+          <button class="admin-pts-btn plus" onclick="adjustPlayer('${p.id}',1)">+</button>
+        </div>`;
+      }).join('') : '<p style="padding:0.75rem 1.1rem;font-size:0.8rem;color:var(--muted)">No players yet</p>';
+
+      return `<div class="admin-team-block">
+        <div class="admin-team-header">
+          <div class="admin-team-dot" style="background:${meta.color}"></div>
+          <span class="admin-team-name" style="color:${meta.color}">${meta.name}</span>
+          <span class="admin-team-total">${total} pts</span>
+        </div>
+        <div class="admin-team-pts-row">
+          <span class="admin-team-pts-label">Team bonus points</span>
+          <button class="admin-pts-btn minus" onclick="adjustTeam(${tid},-1)">−</button>
+          <span class="admin-pts-val" id="tp-${tid}">${team.team_bonus||0}</span>
+          <button class="admin-pts-btn plus" onclick="adjustTeam(${tid},1)">+</button>
+        </div>
+        ${playersHtml}
+      </div>`;
+    }).join('');
+  }
+
+  async function adjustPlayer(id, dir) {
+    const p = adminData.players.find(p => p.id === id);
+    if (!p) return;
+    const newVal = Math.max(0, (p.bonus_points || 0) + dir * adminPtVal);
+    p.bonus_points = newVal;
+    const el = document.getElementById(`pp-${id}`);
+    if (el) el.textContent = newVal;
+    renderAdminTotals();
+    try {
+      await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ bonus_points: newVal })
+      });
+    } catch(e) { console.error('Save failed', e); }
+  }
+
+  async function adjustTeam(tid, dir) {
+    const t = adminData.teams.find(t => t.id === tid);
+    if (!t) return;
+    const newVal = Math.max(0, (t.team_bonus || 0) + dir * adminPtVal);
+    t.team_bonus = newVal;
+    const el = document.getElementById(`tp-${tid}`);
+    if (el) el.textContent = newVal;
+    renderAdminTotals();
+    try {
+      await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
+        method: 'PATCH',
+        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ team_bonus: newVal })
+      });
+    } catch(e) { console.error('Save failed', e); }
+  }
+
+  function renderAdminTotals() {
+    [1,2,3,4].forEach(tid => {
+      const team = adminData.teams.find(t => t.id === tid) || { team_bonus: 0 };
+      const members = adminData.players.filter(p => p.team === tid);
+      const total = members.reduce((s,p) => s+(p.bonus_points||0),0) + (team.team_bonus||0);
+      const header = document.querySelector(`#tp-${tid}`)?.closest('.admin-team-block')?.querySelector('.admin-team-total');
+      if (header) header.textContent = total + ' pts';
+    });
+  }
 
   // ── INIT ──
   loadGuests();
