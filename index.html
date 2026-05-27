@@ -484,11 +484,22 @@
 
       // 3. Send confirmation email via Edge Function
       btn.textContent = 'Sending confirmation…';
-      await fetch(`${SB_URL}/functions/v1/send-confirmation`, {
-        method: 'POST',
-        headers: { ...HEADERS },
-        body: JSON.stringify({ name, email, quiz_score: quizScore })
-      });
+      try {
+        const emailRes = await fetch(`${SB_URL}/functions/v1/send-confirmation`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + SB_KEY,
+          },
+          body: JSON.stringify({ name, email, quiz_score: quizScore })
+        });
+        if (!emailRes.ok) {
+          const eBody = await emailRes.text();
+          console.warn('Email function error:', eBody);
+        }
+      } catch(emailErr) {
+        console.warn('Email send failed (non-fatal):', emailErr);
+      }
       // We don't throw on email failure — registration already saved
 
       // 4. Success
