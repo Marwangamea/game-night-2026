@@ -1081,9 +1081,18 @@
       if (!overlay || !cdEl) return;
       const diff = unlockTime - now;
       if (diff <= 0) {
-        overlay.classList.add('unlocked');
+        // Challenge is live — remove overlay with a little flourish
+        overlay.style.transition = 'opacity 0.6s ease';
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => { overlay.style.display = 'none'; }, 650);
+        cdEl.textContent = '';
         return;
       }
+      // Still locked — show countdown
+      overlay.style.display = '';
+      overlay.style.opacity = '';
+      overlay.style.pointerEvents = '';
       const d = Math.floor(diff / 86400000);
       const h = Math.floor(diff % 86400000 / 3600000);
       const m = Math.floor(diff % 3600000 / 60000);
@@ -1094,8 +1103,16 @@
     });
   }
 
+  // Run immediately on load (handles already-passed unlock times)
   updateChallengeCountdowns();
+  // Then tick every second for live countdowns
   setInterval(updateChallengeCountdowns, 1000);
+  // Also re-check whenever the challenges tab is opened
+  const _origSwitchTab = switchTab;
+  function switchTab(name, btn) {
+    _origSwitchTab(name, btn);
+    if (name === 'challenges') updateChallengeCountdowns();
+  }
 
   // ── INIT ──
   loadGuests();
