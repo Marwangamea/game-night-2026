@@ -675,6 +675,16 @@
     </section>
   </div><!-- /tab-admin -->
 
+  <!-- QUIZ DISCLAIMER MODAL -->
+  <div id="quizModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem;">
+    <div style="background:var(--surface);border:1px solid var(--border-gold);border-radius:20px;padding:2rem 1.5rem;max-width:360px;width:100%;text-align:center;animation:fadeUp 0.3s ease;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">🎯</div>
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:0.75rem;letter-spacing:0.05em;">Quick heads up</h3>
+      <p style="font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;">No cheating — this is just to split you into fair teams. Your score here means nothing on game night.</p>
+      <button onclick="dismissQuizModal()" style="background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:0.9rem 2rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;width:100%;touch-action:manipulation;-webkit-tap-highlight-color:transparent;">Let's go →</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -869,7 +879,8 @@
     }
     dupBtn.disabled = false;
     dupBtn.textContent = 'Next — Take the Quiz →';
-    setStep(2); renderQuestion(0);
+    // Show disclaimer modal before starting quiz
+    document.getElementById('quizModal').style.display = 'flex';
   }
 
   function renderQuestion(idx) {
@@ -1530,6 +1541,11 @@
       const header = document.querySelector(`#tp-${tid}`)?.closest('.admin-team-block')?.querySelector('.admin-team-total');
       if (header) header.textContent = total + ' pts';
     });
+  }
+
+  function dismissQuizModal() {
+    document.getElementById('quizModal').style.display = 'none';
+    setStep(2); renderQuestion(0);
   }
 
   // ── INIT ──
