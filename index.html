@@ -191,14 +191,14 @@
   .photo-error.show { display: block; }
 
   /* PHOTO STRIP */
-  .photo-strip { width: 100%; overflow: hidden; cursor: grab; user-select: none; padding: 1rem 0 1.5rem; }
+  .photo-strip { width: 100%; overflow: hidden; cursor: grab; user-select: none; padding: 1rem 0 1.5rem; -webkit-transform: translateZ(0); transform: translateZ(0); touch-action: pan-x; }
   .photo-strip:active { cursor: grabbing; }
-  .photo-track { display: flex; gap: 1rem; width: max-content; padding: 0 1.5rem; animation: scroll-photos 40s linear infinite; }
+  .photo-track { display: flex; gap: 1rem; width: max-content; padding: 0 1.5rem; animation: scroll-photos 18s linear infinite; will-change: transform; -webkit-transform: translateZ(0); transform: translateZ(0); }
 
   .photo-item { background: var(--surface); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; width: 220px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: transform 0.2s; }
   .photo-item:hover { transform: scale(1.03) rotate(0deg) !important; z-index: 2; }
   .photo-caption { font-size: 0.72rem; color: var(--muted); padding: 0.5rem 0.75rem; background: var(--surface); letter-spacing: 0.03em; }
-  @keyframes scroll-photos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @-webkit-keyframes scroll-photos { 0% { -webkit-transform: translateX(0); } 100% { -webkit-transform: translateX(-50%); } } @keyframes scroll-photos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   @media (max-width: 480px) { .photo-item { width: 180px; } }
 
   /* CHALLENGE CARDS */
@@ -1218,6 +1218,98 @@
   // Then tick every second for live countdowns
   setInterval(updateChallengeCountdowns, 1000);
 
+
+  // ── PHOTO STRIP SWIPE ──
+  (function() {
+    const strip = document.getElementById('photoStrip');
+    const track = document.getElementById('photoTrack');
+    if (!strip || !track) return;
+
+    let isDragging = false;
+    let startX = 0;
+    let currentOffset = 0;
+    let animOffset = 0;
+    let rafId = null;
+    const SPEED = 0.6; // px per frame at 60fps
+
+    // Pause CSS animation, take over with JS
+    function startManual() {
+      // Read current translated position from CSS animation
+      const style = window.getComputedStyle(track);
+      const matrix = new DOMMatrix(style.transform);
+      animOffset = matrix.m41;
+      currentOffset = animOffset;
+      track.style.animationPlayState = 'paused';
+      track.style.transform = `translateX(${currentOffset}px) translateZ(0)`;
+    }
+
+    function resumeAuto() {
+      track.style.animationPlayState = 'running';
+      track.style.transform = '';
+    }
+
+    // Auto-scroll loop (JS-driven after first interaction for smoothness)
+    let jsScrolling = false;
+    function jsScroll() {
+      if (isDragging) { rafId = requestAnimationFrame(jsScroll); return; }
+      currentOffset -= SPEED;
+      // Get half-width to loop
+      const halfW = track.scrollWidth / 2;
+      if (Math.abs(currentOffset) >= halfW) currentOffset = 0;
+      track.style.transform = `translateX(${currentOffset}px) translateZ(0)`;
+      rafId = requestAnimationFrame(jsScroll);
+    }
+
+    // Touch events
+    strip.addEventListener('touchstart', e => {
+      if (!jsScrolling) {
+        jsScrolling = true;
+        startManual();
+        rafId = requestAnimationFrame(jsScroll);
+      }
+      isDragging = true;
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    strip.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      const dx = e.touches[0].clientX - startX;
+      startX = e.touches[0].clientX;
+      currentOffset += dx;
+      const halfW = track.scrollWidth / 2;
+      if (currentOffset > 0) currentOffset = -halfW + currentOffset;
+      if (Math.abs(currentOffset) >= halfW) currentOffset = 0;
+      track.style.transform = `translateX(${currentOffset}px) translateZ(0)`;
+    }, { passive: true });
+
+    strip.addEventListener('touchend', () => { isDragging = false; });
+
+    // Mouse drag (desktop)
+    strip.addEventListener('mousedown', e => {
+      if (!jsScrolling) {
+        jsScrolling = true;
+        startManual();
+        rafId = requestAnimationFrame(jsScroll);
+      }
+      isDragging = true;
+      startX = e.clientX;
+      strip.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      startX = e.clientX;
+      currentOffset += dx;
+      const halfW = track.scrollWidth / 2;
+      if (currentOffset > 0) currentOffset = -halfW + currentOffset;
+      if (Math.abs(currentOffset) >= halfW) currentOffset = 0;
+      track.style.transform = `translateX(${currentOffset}px) translateZ(0)`;
+    });
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      strip.style.cursor = 'grab';
+    });
+  })();
 
   // ── INIT ──
   loadGuests();
