@@ -197,7 +197,7 @@
     .teasers-section { padding: 2.5rem 1.25rem; }
     .countdown-section { padding: 2.5rem 1.25rem; }
     .guests-section { padding: 1.5rem 1.25rem 2rem; }
-    .teams-gate { padding: 2rem 1.25rem 3rem; }
+    .teams-gate { padding: 0.5rem 1.25rem 3rem; }
     .teasers-grid { grid-template-columns: 1fr 1fr; }
     .teams-grid { grid-template-columns: 1fr 1fr; }
     .quiz-question { font-size: 1.05rem; }
@@ -248,23 +248,6 @@
       <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-label">Secs</span></div>
     </div>
   </section>
-
-  <div class="ornament">✦ ✦ ✦</div>
-
-  <!-- TEASERS -->
-  <section class="teasers-section">
-    <h2 class="section-title">What Awaits</h2>
-    <p class="section-sub">Five rounds. Zero mercy.</p>
-    <div class="teasers-grid">
-      <div class="teaser-card"><span class="teaser-num">01</span><span class="teaser-emoji">🔔</span><p class="teaser-title">Buzzer Round</p><p class="teaser-desc">Race to answer on your phone. First buzz wins.</p></div>
-      <div class="teaser-card"><span class="teaser-num">02</span><span class="teaser-emoji">🕵️</span><p class="teaser-title">Who Is It?</p><p class="teaser-desc">Clues about people in this very room.</p></div>
-      <div class="teaser-card"><span class="teaser-num">03</span><span class="teaser-emoji">🎤</span><p class="teaser-title">Act It Out</p><p class="teaser-desc">Songs, movies — acted, not spoken.</p></div>
-      <div class="teaser-card"><span class="teaser-num">04</span><span class="teaser-emoji">🎨</span><p class="teaser-title">AI Prompt Wars</p><p class="teaser-desc">Weirdest prompt wins. AI draws it live.</p></div>
-      <div class="teaser-card"><span class="teaser-num">05</span><span class="teaser-emoji">🔥</span><p class="teaser-title">Final Showdown</p><p class="teaser-desc">Top 3 face off. One champion. Eternal glory.</p></div>
-    </div>
-  </section>
-
-  <div class="ornament">✦ ✦ ✦</div>
 
   <!-- REGISTRATION -->
   <section class="form-section" id="register">
@@ -641,7 +624,7 @@
   async function loadTeams() {
     try {
       const res = await fetch(`${SB_URL}/rest/v1/rsvps?select=name,avatar_url,quiz_score,team&order=quiz_score.desc`, { headers: HEADERS });
-      if (!res.ok) throw new Error();
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
       const players = await res.json();
 
       const grid = document.getElementById('teamsGrid');
@@ -685,7 +668,8 @@
         `${players.length} players · balanced by quiz score`;
 
     } catch(e) {
-      document.getElementById('teamsGrid').innerHTML = '<div class="loading-row" style="color:rgba(224,84,84,0.7)">Could not load teams</div>';
+      console.error('loadTeams error:', e);
+      document.getElementById('teamsGrid').innerHTML = `<div class="loading-row" style="color:rgba(224,84,84,0.7)">Could not load teams: ${e.message}</div>`;
     }
   }
 
