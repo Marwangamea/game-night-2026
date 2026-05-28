@@ -409,7 +409,7 @@
       <p class="quiz-question" id="quizQuestion"></p>
       <div class="quiz-options" id="quizOptions"></div>
       <div class="quiz-feedback" id="quizFeedback"></div>
-      <button class="btn-primary quiz-next-btn" id="quizNextBtn" style="display:none" onclick="nextQuestion()">Next Question →</button>
+      
     </div>
 
     <!-- STEP 3: Score -->
@@ -477,7 +477,7 @@
         <div class="challenge-card">
           <div class="challenge-locked-overlay" id="ch-overlay-1">
             <span style="font-size:1.5rem;">🔐</span>
-            <p style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--cream);margin:4px 0 0;letter-spacing:0.05em;">Ersem Dehka</p>
+            <p style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--cream);margin:4px 0 0;letter-spacing:0.05em;">Ersem Dehka 👶</p>
             <span class="challenge-countdown" id="ch-cd-1"></span>
           </div>
           <div class="challenge-content">
@@ -485,7 +485,7 @@
               <span class="challenge-num">01</span>
               <span class="challenge-tag">📸 Photo</span>
             </div>
-            <h3 class="challenge-title">Ersem Dehka</h3>
+            <h3 class="challenge-title">Ersem Dehka 👶</h3>
             <p class="challenge-desc">Find a child selling something on the street and take a photo with them. Spread some joy while you're at it.</p>
             <p class="challenge-meta">📅 Unlocks Thursday May 28th · Send to Marwan or Haridy on WhatsApp by Sunday 5 PM</p>
           </div>
@@ -946,7 +946,7 @@
       </div>`;
 
     document.getElementById('quizFeedback').classList.remove('show','correct','wrong');
-    document.getElementById('quizNextBtn').style.display = 'none';
+    // next btn removed
   }
 
   function selectHLAnswer(choice) {
@@ -1002,11 +1002,9 @@
     fb.innerHTML = correct ? '✓ Correct!' : `✗ Wrong — ${q.challengeLabel} is ${q.answer} (${q.challengeVal})`;
     fb.className = 'quiz-feedback show ' + (correct ? 'correct' : 'wrong');
 
-    const nextBtn = document.getElementById('quizNextBtn');
-    nextBtn.style.display = 'block';
+    // Auto-advance after showing feedback
     const isLast = currentQ === QUESTIONS.length - 1;
-    const isGameTransition = !isLast && QUESTIONS[currentQ + 1].game !== q.game;
-    nextBtn.textContent = isLast ? 'See My Score →' : isGameTransition ? 'Next Game →' : 'Next →';
+    setTimeout(() => nextQuestion(), isLast ? 1200 : 900);
   }
 
   function nextQuestion() {
@@ -1191,11 +1189,11 @@
 
   // ── CHALLENGES ──
   const CHALLENGE_UNLOCK_TIMES = [
-    new Date('2026-05-28T00:00:00+03:00'), // Ersem Dehka
-    new Date('2026-05-28T00:00:00+03:00'), // Code Red
-    new Date('2026-05-28T00:00:00+03:00'), // Bahareya
-    new Date('2026-05-29T00:00:00+03:00'), // The Race
-    new Date('2026-05-31T00:00:00+03:00'), // Fashion Icon
+    new Date('2026-05-29T17:00:00Z'), // Ersem Dehka — Friday 8PM Egypt
+    new Date('2026-05-29T17:00:00Z'), // Code Red — Friday 8PM Egypt
+    new Date('2026-05-29T17:00:00Z'), // Bahareya — Friday 8PM Egypt
+    new Date('2026-05-30T00:00:00+03:00'), // The Race — Saturday midnight Egypt
+    new Date('2026-05-29T17:00:00Z'), // Fashion Icon — Friday 8PM Egypt
   ];
   let challengesAdminUnlocked = false;
 
