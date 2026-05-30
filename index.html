@@ -578,7 +578,7 @@
         <div style="display:flex;gap:0.6rem;justify-content:center;margin-bottom:1.25rem;">
           <div style="width:14px;height:14px;border-radius:50%;background:#E91E8C;opacity:0.6;"></div>
           <div style="width:14px;height:14px;border-radius:50%;background:#F5C518;opacity:0.6;"></div>
-          <div style="width:14px;height:14px;border-radius:50%;background:#D0CCC4;opacity:0.6;"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:#4A90D9;opacity:0.6;"></div>
           <div style="width:14px;height:14px;border-radius:50%;background:#3DBA7A;opacity:0.6;"></div>
         </div>
         <div class="lock-icon">🔐</div>
@@ -706,7 +706,7 @@
   const TEAM_META = {
     1: { name: 'Pink',   color: '#E91E8C' },
     2: { name: 'Yellow', color: '#F5C518' },
-    3: { name: 'White',  color: '#D0CCC4' },
+    3: { name: 'Blue',  color: '#4A90D9' },
     4: { name: 'Green',  color: '#3DBA7A' },
   };
 
@@ -1458,7 +1458,7 @@
   }
 
   function renderAdmin() {
-    const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'White',color:'#D0CCC4'}, 4:{name:'Green',color:'#3DBA7A'} };
+    const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'Blue',color:'#4A90D9'}, 4:{name:'Green',color:'#3DBA7A'} };
     const el = document.getElementById('adminTeams');
     el.innerHTML = [1,2,3,4].map(tid => {
       const team = adminData.teams.find(t => t.id === tid) || { team_bonus: 0 };
