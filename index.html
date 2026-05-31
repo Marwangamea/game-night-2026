@@ -657,98 +657,80 @@
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.5rem);color:var(--cream);">Admin Panel</h2>
         </div>
 
-        <!-- GAME SCORES SECTION -->
+        <!-- GAMES SECTION -->
         <div style="margin-bottom:2rem;">
-          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:1rem;">🎮 Game Results</h3>
-
-          <!-- 4-team games -->
-          <p style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">4-Team Games (1st=4pts · 2nd=3pts · 3rd=2pts · 4th=0pts)</p>
-          <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.25rem;" id="fourTeamGames">
-            <div class="game-result-row" data-game="Saboora">
-              <span class="grr-label">Saboora</span>
-              <select class="grr-sel" data-pos="1" onchange="applyGameResult('Saboora',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" data-pos="2" onchange="applyGameResult('Saboora',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" data-pos="3" onchange="applyGameResult('Saboora',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" data-pos="4" onchange="applyGameResult('Saboora',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-            </div>
-            <div class="game-result-row" data-game="Top 10">
-              <span class="grr-label">Top 10</span>
-              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-            </div>
-            <div class="game-result-row" data-game="Higher or Lower">
-              <span class="grr-label">Higher or Lower</span>
-              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-            </div>
-            <div class="game-result-row" data-game="Ziago">
-              <span class="grr-label">Ziago</span>
-              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-            </div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.75rem;">🎮 Games</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;" id="gamesGrid">
+            <button class="game-result-card" onclick="openGamePopup('saboora')">
+              <span class="grc-name">Saboora</span>
+              <span class="grc-status" id="grc-saboora">Not set</span>
+            </button>
+            <button class="game-result-card" onclick="openGamePopup('top10')">
+              <span class="grc-name">Top 10</span>
+              <span class="grc-status" id="grc-top10">Not set</span>
+            </button>
+            <button class="game-result-card" onclick="openGamePopup('hol')">
+              <span class="grc-name">Higher or Lower</span>
+              <span class="grc-status" id="grc-hol">Not set</span>
+            </button>
+            <button class="game-result-card" onclick="openGamePopup('ziago')">
+              <span class="grc-name">Ziago</span>
+              <span class="grc-status" id="grc-ziago">Not set</span>
+            </button>
+            <button class="game-result-card" onclick="openGamePopup('hob')">
+              <span class="grc-name">10 Bel Hob</span>
+              <span class="grc-status grc-blended" id="grc-hob">Not set</span>
+            </button>
+            <button class="game-result-card" onclick="openGamePopup('jeopardy')">
+              <span class="grc-name">Jeopardy</span>
+              <span class="grc-status grc-blended" id="grc-jeopardy">Not set</span>
+            </button>
           </div>
-
-          <!-- 2-team blended games -->
-          <p style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">2-Team Blended Games (Winner=+2pts · Loser=0pts)</p>
-          <div style="display:flex;flex-direction:column;gap:0.6rem;" id="twoTeamGames">
-            <div class="game-result-row" data-game="10 Bel Hob">
-              <span class="grr-label">10 Bel Hob</span>
-              <div style="display:flex;gap:0.5rem;flex:1;">
-                <div style="flex:1;text-align:center;">
-                  <div style="font-size:9px;color:var(--muted);margin-bottom:3px;">WINNERS (+2pts each)</div>
-                  <div style="display:flex;gap:4px;">
-                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('10 Bel Hob','w1',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('10 Bel Hob','w2',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="game-result-row" data-game="Jeopardy">
-              <span class="grr-label">Jeopardy</span>
-              <div style="display:flex;gap:0.5rem;flex:1;">
-                <div style="flex:1;text-align:center;">
-                  <div style="font-size:9px;color:var(--muted);margin-bottom:3px;">WINNERS (+2pts each)</div>
-                  <div style="display:flex;gap:4px;">
-                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('Jeopardy','w1',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('Jeopardy','w2',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button onclick="saveAllGameResults()" style="margin-top:1rem;width:100%;background:var(--gold);color:#0D0C0A;border:none;border-radius:10px;padding:0.85rem;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">💾 Save Game Results</button>
         </div>
 
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.5rem 0;">
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.25rem 0;">
 
-        <!-- CHALLENGES SECTION -->
-        <div style="margin-bottom:2rem;">
-          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.5rem;">🏅 Challenge Rewards</h3>
-          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem;">Click a player to award a challenge. Max +4 bonus pts per team total. Bahareya: 1 winner · Race: 3 winners · Outfit: 3 winners.</p>
-          <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;" id="challengeButtons">
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-              <button class="ch-btn active-ch" onclick="setChallengeMode('bahareya')" id="chbtn-bahareya">🏃 Bahareya (+2)</button>
-              <button class="ch-btn" onclick="setChallengeMode('outfit')" id="chbtn-outfit">👗 Best Outfit (+2)</button>
-              <button class="ch-btn" onclick="setChallengeMode('race')" id="chbtn-race">🏁 The Race (+2)</button>
-              <button class="ch-btn" onclick="setChallengeMode('codered')" id="chbtn-codered">🔴 Code Red (+1)</button>
-              <button class="ch-btn" onclick="setChallengeMode('ersem')" id="chbtn-ersem">👶 Ersem Dehka (+1)</button>
-            </div>
-            <div id="chModeLabel" style="font-size:0.78rem;color:var(--gold);padding:0.3rem 0;">Selected: Bahareya — click a player to award</div>
-          </div>
+        <!-- PLAYERS / BONUSES SECTION -->
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.4rem;">🏅 Challenge Bonuses</h3>
+          <p style="font-size:0.72rem;color:var(--muted);margin-bottom:0.9rem;">Tap a player → choose challenge from dropdown → confirm. Max +4 per team.</p>
         </div>
 
         <!-- Teams + players -->
         <div id="adminTeams" style="display:flex;flex-direction:column;gap:1rem;">
           <div class="loading-row"><div class="spinner"></div> Loading…</div>
         </div>
-      </div>
+
+        <!-- GAME RESULT POPUP -->
+        <div id="gamePopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;">
+          <div style="background:#120D16;border:1px solid rgba(255,215,0,0.2);border-radius:18px;padding:1.75rem;max-width:380px;width:92%;max-height:90vh;overflow-y:auto;">
+            <h3 id="gamePopupTitle" style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);margin-bottom:1.25rem;text-align:center;letter-spacing:0.06em;">Game Result</h3>
+            <div id="gamePopupBody"></div>
+            <div style="display:flex;gap:0.6rem;margin-top:1.25rem;">
+              <button onclick="closeGamePopup()" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--muted);border-radius:10px;padding:0.75rem;font-family:'Cairo',sans-serif;font-size:0.9rem;cursor:pointer;">Cancel</button>
+              <button onclick="saveGamePopup()" style="flex:2;background:var(--gold);color:#0D0C0A;border:none;border-radius:10px;padding:0.75rem;font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">Save Result ✓</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BONUS POPUP -->
+        <div id="bonusPopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;">
+          <div style="background:#120D16;border:1px solid rgba(255,215,0,0.2);border-radius:18px;padding:1.75rem;max-width:340px;width:92%;">
+            <h3 id="bonusPopupName" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--cream);margin-bottom:1.25rem;text-align:center;"></h3>
+            <select id="bonusChallengeSelect" style="width:100%;background:#1a1520;border:1px solid rgba(255,255,255,0.15);color:var(--cream);border-radius:10px;padding:0.75rem;font-family:'Cairo',sans-serif;font-size:0.9rem;margin-bottom:1rem;">
+              <option value="">— Select challenge —</option>
+              <option value="bahareya">🏃 Bahareya (+2 pts) — max 1 winner</option>
+              <option value="outfit">👗 Best Outfit (+2 pts) — max 3 winners</option>
+              <option value="race">🏁 The Race (+2 pts) — max 3 winners</option>
+              <option value="codered">🔴 Code Red (+1 pt)</option>
+              <option value="ersem">👶 Ersem Dehka (+1 pt)</option>
+            </select>
+            <div style="display:flex;gap:0.6rem;">
+              <button onclick="closeBonusPopup()" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--muted);border-radius:10px;padding:0.75rem;font-family:'Cairo',sans-serif;font-size:0.9rem;cursor:pointer;">Cancel</button>
+              <button onclick="confirmBonusAward()" style="flex:2;background:var(--gold);color:#0D0C0A;border:none;border-radius:10px;padding:0.75rem;font-family:'Cairo',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;">Award ✓</button>
+            </div>
+          </div>
+        </div>
 
     </section>
   </div><!-- /tab-admin -->
@@ -1536,212 +1518,183 @@
   }
 
   
-  // ── SCORING CONSTANTS ──
-  const GAME_PTS = { 1:4, 2:3, 3:2, 4:0 };
-  const BLENDED_WIN_PTS = 2;
-  const CHALLENGE_PTS = { bahareya:2, outfit:2, race:2, codered:1, ersem:1 };
-  const CHALLENGE_MAX_WINNERS = { bahareya:1, outfit:3, race:3, codered:99, ersem:99 };
+  // ── GAME SCORING ──
+  const TEAM_NAMES = ['Pink','Yellow','Blue','Green'];
+  const TEAM_IDS = {Pink:1,Yellow:2,Blue:3,Green:4};
+  const TEAM_COLORS = {Pink:'#E91E8C',Yellow:'#F5C518',Blue:'#4A90D9',Green:'#3DBA7A'};
+  const GAME_PTS_4 = [4,3,2,0];
+  const BLENDED_WIN = 2;
+  const CHALLENGE_PTS = {bahareya:2,outfit:2,race:2,codered:1,ersem:1};
+  const CHALLENGE_MAX = {bahareya:1,outfit:3,race:3,codered:99,ersem:99};
   const MAX_TEAM_BONUS = 4;
 
-  let gameResults = {}; // { 'Saboora': { Pink:4, Yellow:3, Blue:2, Green:0 }, ... }
-  let blendedResults = {}; // { '10 Bel Hob': { w1:'Pink', w2:'Yellow' }, ... }
-  let challengeMode = 'bahareya';
-  let challengeWinners = { bahareya:[], outfit:[], race:[], codered:[], ersem:[] };
+  let savedGameResults = {}; // { saboora: {Pink:4,Yellow:3,Blue:2,Green:0}, ... }
+  let challengeWinners = {bahareya:[],outfit:[],race:[],codered:[],ersem:[]};
+  let currentGamePopup = null;
+  let bonusTargetPlayerId = null;
 
-  function setChallengeMode(ch) {
-    challengeMode = ch;
-    document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active-ch'));
-    document.getElementById('chbtn-' + ch).classList.add('active-ch');
-    const labels = { bahareya:'Bahareya (+2) — max 1 winner', outfit:'Best Outfit (+2) — max 3 winners', race:'The Race (+2) — max 3 winners', codered:'Code Red (+1) — unlimited', ersem:'Ersem Dehka (+1) — unlimited' };
-    document.getElementById('chModeLabel').textContent = 'Selected: ' + labels[ch] + ' — click a player to award';
+  // ── GAME POPUP ──
+  function openGamePopup(gameKey) {
+    currentGamePopup = gameKey;
+    const isBlended = gameKey === 'hob' || gameKey === 'jeopardy';
+    const titles = {saboora:'Saboora',top10:'Top 10',hol:'Higher or Lower',ziago:'Ziago',hob:'10 Bel Hob',jeopardy:'Jeopardy'};
+    document.getElementById('gamePopupTitle').textContent = titles[gameKey];
+    const existing = savedGameResults[gameKey] || {};
+
+    if (isBlended) {
+      const w = existing.winners || [];
+      document.getElementById('gamePopupBody').innerHTML = `
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;text-align:center;">Select the 2 winning original teams (+2 pts each)</p>
+        <div class="game-popup-row"><span class="game-popup-label">Winner 1</span>
+          <select class="game-popup-sel" id="gpW1"><option value="">— Team —</option>${TEAM_NAMES.map(t=>`<option ${w[0]===t?'selected':''}>${t}</option>`).join('')}</select></div>
+        <div class="game-popup-row"><span class="game-popup-label">Winner 2</span>
+          <select class="game-popup-sel" id="gpW2"><option value="">— Team —</option>${TEAM_NAMES.map(t=>`<option ${w[1]===t?'selected':''}>${t}</option>`).join('')}</select></div>`;
+    } else {
+      const r = existing.ranks || {};
+      document.getElementById('gamePopupBody').innerHTML = `
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;text-align:center;">1st=4pts · 2nd=3pts · 3rd=2pts · 4th=0pts</p>
+        ${['1st','2nd','3rd','4th'].map((pos,i)=>`
+        <div class="game-popup-row"><span class="game-popup-label">${pos}</span>
+          <select class="game-popup-sel" id="gp${i+1}"><option value="">— Team —</option>${TEAM_NAMES.map(t=>`<option ${r[pos]===t?'selected':''}>${t}</option>`).join('')}</select></div>`).join('')}`;
+    }
+    document.getElementById('gamePopupOverlay').style.display = 'flex';
   }
 
-  function applyGameResult(game, sel) {
-    const pos = parseInt(sel.dataset.pos || sel.options[sel.selectedIndex].text.match(/\d/)?.[0] || 0);
-    // pos is encoded in option text "1st" etc
-    const posMap = {'1st':1,'2nd':2,'3rd':3,'4th':4};
-    const posNum = posMap[sel.options[0].text] || 1;
-    if (!gameResults[game]) gameResults[game] = {};
-    if (sel.value) gameResults[game][sel.value] = GAME_PTS[posNum];
+  function closeGamePopup() {
+    document.getElementById('gamePopupOverlay').style.display = 'none';
+    currentGamePopup = null;
   }
 
-  function applyBlendedResult(game, slot, sel) {
-    if (!blendedResults[game]) blendedResults[game] = {};
-    blendedResults[game][slot] = sel.value;
+  async function saveGamePopup() {
+    const key = currentGamePopup;
+    const isBlended = key === 'hob' || key === 'jeopardy';
+    let result = {};
+
+    if (isBlended) {
+      const w1 = document.getElementById('gpW1').value;
+      const w2 = document.getElementById('gpW2').value;
+      if (!w1 || !w2) { alert('Please select both winners.'); return; }
+      if (w1 === w2) { alert('Winners must be different teams.'); return; }
+      result = { winners: [w1, w2] };
+    } else {
+      const sels = [1,2,3,4].map(i => document.getElementById('gp'+i).value);
+      const filled = sels.filter(Boolean);
+      const unique = new Set(filled);
+      if (unique.size !== filled.length) { alert('Each team can only appear once.'); return; }
+      result = { ranks: {'1st':sels[0],'2nd':sels[1],'3rd':sels[2],'4th':sels[3]} };
+    }
+
+    savedGameResults[key] = result;
+    closeGamePopup();
+    await recalcAndSaveGameBonus();
+    updateGameCards();
+    await loadAdmin();
   }
 
-  async function saveAllGameResults() {
-    // Build team_bonus from game results + challenge winners
-    const teamBonus = {Pink:0, Yellow:0, Blue:0, Green:0};
+  function updateGameCards() {
+    const keys = {saboora:'saboora',top10:'top10',hol:'hol',ziago:'ziago',hob:'hob',jeopardy:'jeopardy'};
+    Object.entries(keys).forEach(([k,id]) => {
+      const el = document.getElementById('grc-'+id);
+      if (!el) return;
+      const r = savedGameResults[k];
+      if (!r) { el.textContent = 'Not set'; el.className = 'grc-status'; return; }
+      if (r.winners) {
+        el.textContent = '✓ '+r.winners.join(' + ')+' won';
+      } else if (r.ranks) {
+        const top = r.ranks['1st'];
+        el.textContent = top ? '✓ '+top+' 1st' : 'Partial';
+      }
+      el.className = 'grc-status grc-done';
+    });
+  }
 
-    // 4-team games: read all selects
-    document.querySelectorAll('#fourTeamGames .game-result-row').forEach(row => {
-      const game = row.dataset.game;
-      const sels = row.querySelectorAll('.grr-sel');
-      const pts = [4,3,2,0];
-      sels.forEach((sel, i) => {
-        if (sel.value) teamBonus[sel.value] = (teamBonus[sel.value]||0) + pts[i];
+  async function recalcAndSaveGameBonus() {
+    // Calculate game pts per team
+    const pts = {Pink:0,Yellow:0,Blue:0,Green:0};
+    const order = [4,3,2,0];
+    const fourGames = ['saboora','top10','hol','ziago'];
+    fourGames.forEach(k => {
+      const r = savedGameResults[k];
+      if (!r || !r.ranks) return;
+      ['1st','2nd','3rd','4th'].forEach((pos,i) => {
+        if (r.ranks[pos]) pts[r.ranks[pos]] += order[i];
       });
     });
-
-    // 2-team blended games
-    document.querySelectorAll('#twoTeamGames .game-result-row').forEach(row => {
-      const sels = row.querySelectorAll('.grr-sel');
-      sels.forEach(sel => {
-        if (sel.value) teamBonus[sel.value] = (teamBonus[sel.value]||0) + BLENDED_WIN_PTS;
-      });
+    const blendedGames = ['hob','jeopardy'];
+    blendedGames.forEach(k => {
+      const r = savedGameResults[k];
+      if (!r || !r.winners) return;
+      r.winners.forEach(t => { if (pts[t] !== undefined) pts[t] += BLENDED_WIN; });
     });
 
-    // Challenge bonuses (already stored in player bonus_points via awardChallenge)
-    // team_bonus only stores game points
-    const TEAM_NAME_TO_ID = {Pink:1, Yellow:2, Blue:3, Green:4};
-
-    for (const [name, pts] of Object.entries(teamBonus)) {
-      const tid = TEAM_NAME_TO_ID[name];
-      if (!tid) continue;
+    // Save team_bonus for each team
+    for (const [name, gamePts] of Object.entries(pts)) {
+      const tid = TEAM_IDS[name];
       try {
         await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
-          method: 'PATCH',
-          headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-          body: JSON.stringify({ team_bonus: pts })
+          method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+          body: JSON.stringify({team_bonus: gamePts})
         });
-      } catch(e) { console.error('Save team bonus failed', e); }
+        const t = adminData.teams.find(t=>t.id===tid);
+        if (t) t.team_bonus = gamePts;
+      } catch(e) { console.error(e); }
     }
-
-    await loadAdmin();
-    alert('Game results saved! ✓');
+    renderAdminTotals();
   }
 
-  async function awardChallenge(playerId) {
-    const ch = challengeMode;
-    const pts = CHALLENGE_PTS[ch];
-    const maxW = CHALLENGE_MAX_WINNERS[ch];
-
-    // Check winner count for this challenge
-    if (challengeWinners[ch].includes(playerId)) {
-      alert('This player already received this challenge reward.');
-      return;
-    }
-    if (ch === 'bahareya' && challengeWinners.bahareya.length >= 1) {
-      alert('Bahareya only has 1 winner.');
-      return;
-    }
-    if ((ch === 'outfit' || ch === 'race') && challengeWinners[ch].length >= 3) {
-      alert(ch === 'outfit' ? 'Best Outfit only has 3 winners.' : 'The Race only has 3 winners.');
-      return;
-    }
-
-    // Find player and their team
-    const p = adminData.players.find(pl => pl.id === playerId);
+  // ── BONUS POPUP ──
+  function openBonusPopup(playerId) {
+    bonusTargetPlayerId = playerId;
+    const p = adminData.players.find(p=>p.id===playerId);
     if (!p) return;
+    document.getElementById('bonusPopupName').textContent = p.name;
+    document.getElementById('bonusChallengeSelect').value = '';
+    document.getElementById('bonusPopupOverlay').style.display = 'flex';
+  }
 
-    // Check team bonus cap
-    const teamPlayers = adminData.players.filter(pl => pl.team === p.team);
-    const teamChallengeBonus = teamPlayers.reduce((s, pl) => s + (pl.challenge_bonus||0), 0);
-    const teamObj = adminData.teams.find(t => t.id === p.team);
+  function closeBonusPopup() {
+    document.getElementById('bonusPopupOverlay').style.display = 'none';
+    bonusTargetPlayerId = null;
+  }
 
-    if (teamChallengeBonus + pts > MAX_TEAM_BONUS) {
-      const remaining = MAX_TEAM_BONUS - teamChallengeBonus;
-      if (remaining <= 0) {
-        alert('This team has reached the max +4 challenge bonus cap.');
-        return;
-      }
-      // Award partial
-      const actual = remaining;
-      p.challenge_bonus = (p.challenge_bonus||0) + actual;
-      p.bonus_points = (p.bonus_points||0) + actual;
-    } else {
-      p.challenge_bonus = (p.challenge_bonus||0) + pts;
-      p.bonus_points = (p.bonus_points||0) + pts;
-    }
+  async function confirmBonusAward() {
+    const ch = document.getElementById('bonusChallengeSelect').value;
+    if (!ch) { alert('Please select a challenge.'); return; }
+    const playerId = bonusTargetPlayerId;
+    const p = adminData.players.find(pl=>pl.id===playerId);
+    if (!p) return;
+    let pts = CHALLENGE_PTS[ch];
+    const maxW = CHALLENGE_MAX[ch];
 
+    // Check winner count
+    if (challengeWinners[ch].includes(playerId)) { alert('This player already received this challenge.'); return; }
+    if (ch==='bahareya' && challengeWinners.bahareya.length>=1) { alert('Bahareya only has 1 winner.'); return; }
+    if ((ch==='outfit'||ch==='race') && challengeWinners[ch].length>=3) { alert('Only 3 winners allowed for this challenge.'); return; }
+
+    // Check team cap
+    const teamPlayers = adminData.players.filter(pl=>pl.team===p.team);
+    const teamChallengeTotal = teamPlayers.reduce((s,pl)=>s+(pl.challenge_bonus||0),0);
+    const remaining = MAX_TEAM_BONUS - teamChallengeTotal;
+    if (remaining <= 0) { alert('This team has reached the +4 challenge bonus cap.'); return; }
+    pts = Math.min(pts, remaining);
+
+    p.challenge_bonus = (p.challenge_bonus||0) + pts;
+    p.bonus_points = (p.bonus_points||0) + pts;
     challengeWinners[ch].push(playerId);
 
     // Save to DB
     try {
       await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${playerId}`, {
-        method: 'PATCH',
-        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ bonus_points: p.bonus_points })
+        method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+        body: JSON.stringify({bonus_points: p.bonus_points})
       });
-    } catch(e) { console.error('Save challenge failed', e); }
+    } catch(e) { console.error(e); }
 
+    closeBonusPopup();
     renderAdmin();
     renderAdminTotals();
   }
 
-function renderAdmin() {
-    const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'Blue',color:'#4A90D9'}, 4:{name:'Green',color:'#3DBA7A'} };
-    const el = document.getElementById('adminTeams');
-    el.innerHTML = [1,2,3,4].map(tid => {
-      const team = adminData.teams.find(t => t.id === tid) || { team_bonus: 0 };
-      const meta = TEAM_META[tid];
-      const members = adminData.players.filter(p => p.team === tid);
-      const playerPts = members.reduce((s, p) => s + (p.bonus_points || 0), 0);
-      const total = playerPts + (team.team_bonus || 0);
-      const playersHtml = members.length ? members.map(p => {
-        const ini = p.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-        const av = p.avatar_url
-          ? `<img class="admin-player-avatar" src="${p.avatar_url}" onerror="this.style.display='none'">`
-          : `<div class="admin-player-fallback" style="background:${meta.color};color:${tid===2||tid===3?'#0D0C0A':'#fff'}">${ini}</div>`;
-        const chWon = Object.entries(challengeWinners).filter(([ch,ws]) => ws.includes(p.id)).map(([ch])=>ch).join(', ');
-        return `<div class="admin-player-row" style="cursor:pointer;" onclick="awardChallenge('${p.id}')">
-          ${av}
-          <span class="admin-player-name">${p.name}${chWon ? `<span style="font-size:9px;color:var(--gold);display:block;">${chWon}</span>` : ''}</span>
-          <span class="admin-pts-val" id="pp-${p.id}" style="color:${meta.color}">${p.bonus_points||0} pts</span>
-        </div>`;
-      }).join('') : '<p style="padding:0.75rem 1.1rem;font-size:0.8rem;color:var(--muted)">No players yet</p>';
-
-      return `<div class="admin-team-block">
-        <div class="admin-team-header">
-          <div class="admin-team-dot" style="background:${meta.color}"></div>
-          <span class="admin-team-name" style="color:${meta.color}">${meta.name}</span>
-          <span class="admin-team-total">${total} pts</span>
-        </div>
-        <div class="admin-team-pts-row">
-          <span class="admin-team-pts-label">Team bonus points</span>
-          <button class="admin-pts-btn minus" onclick="adjustTeam(${tid},-1)">−</button>
-          <span class="admin-pts-val" id="tp-${tid}">${team.team_bonus||0}</span>
-          <button class="admin-pts-btn plus" onclick="adjustTeam(${tid},1)">+</button>
-        </div>
-        ${playersHtml}
-      </div>`;
-    }).join('');
-  }
-
-  async function adjustPlayer(id, dir) {
-    const p = adminData.players.find(p => p.id === id);
-    if (!p) return;
-    const newVal = Math.max(0, (p.bonus_points || 0) + dir * adminPtVal);
-    p.bonus_points = newVal;
-    const el = document.getElementById(`pp-${id}`);
-    if (el) el.textContent = newVal;
-    renderAdminTotals();
-    try {
-      await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${id}`, {
-        method: 'PATCH',
-        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ bonus_points: newVal })
-      });
-    } catch(e) { console.error('Save failed', e); }
-  }
-
-  async function adjustTeam(tid, dir) {
-    const t = adminData.teams.find(t => t.id === tid);
-    if (!t) return;
-    const newVal = Math.max(0, (t.team_bonus || 0) + dir * adminPtVal);
-    t.team_bonus = newVal;
-    const el = document.getElementById(`tp-${tid}`);
-    if (el) el.textContent = newVal;
-    renderAdminTotals();
-    try {
-      await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
-        method: 'PATCH',
-        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ team_bonus: newVal })
-      });
-    } catch(e) { console.error('Save failed', e); }
-  }
 
   function renderAdminTotals() {
     [1,2,3,4].forEach(tid => {
@@ -1761,6 +1714,53 @@ function renderAdmin() {
   // ── INIT ──
   loadGuests();
   setInterval(loadGuests, 15000);
+
+
+function renderAdmin() {
+    const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'Blue',color:'#4A90D9'}, 4:{name:'Green',color:'#3DBA7A'} };
+    const el = document.getElementById('adminTeams');
+    el.innerHTML = [1,2,3,4].map(tid => {
+      const team = adminData.teams.find(t => t.id === tid) || { team_bonus: 0 };
+      const meta = TEAM_META[tid];
+      const members = adminData.players.filter(p => p.team === tid);
+      const playerPts = members.reduce((s, p) => s + (p.bonus_points || 0), 0);
+      const total = playerPts + (team.team_bonus || 0);
+
+      const playersHtml = members.length ? members.map(p => {
+        const ini = p.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+        const av = p.avatar_url
+          ? `<img class="admin-player-avatar" src="${p.avatar_url}" onerror="this.style.display='none'">`
+          : `<div class="admin-player-fallback" style="background:${meta.color};color:${tid===2?'#0D0C0A':'#fff'}">${ini}</div>`;
+        // Show which challenges this player won
+        const chBadges = Object.entries(challengeWinners)
+          .filter(([ch,ws]) => ws.includes(p.id))
+          .map(([ch]) => ({bahareya:'🏃',outfit:'👗',race:'🏁',codered:'🔴',ersem:'👶'}[ch]||ch))
+          .join(' ');
+        const bonusPts = p.bonus_points || 0;
+        return `<div class="admin-player-row" onclick="openBonusPopup('${p.id}')" style="cursor:pointer;" title="Click to award challenge bonus">
+          ${av}
+          <div style="flex:1;">
+            <span class="admin-player-name">${p.name}</span>
+            ${chBadges ? `<span style="font-size:11px;margin-left:4px;">${chBadges}</span>` : ''}
+          </div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:${meta.color};">${bonusPts > 0 ? '+'+bonusPts : ''}</span>
+        </div>`;
+      }).join('') : '<p style="padding:0.75rem 1.1rem;font-size:0.8rem;color:var(--muted)">No players yet</p>';
+
+      return `<div class="admin-team-block">
+        <div class="admin-team-header">
+          <div class="admin-team-dot" style="background:${meta.color}"></div>
+          <span class="admin-team-name" style="color:${meta.color}">${meta.name}</span>
+          <span class="admin-team-total">${total} pts</span>
+        </div>
+        ${playersHtml}
+      </div>`;
+    }).join('');
+    updateGameCards();
+  }
+
+
+
 </script>
 </body>
 </html>
