@@ -657,13 +657,91 @@
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.5rem);color:var(--cream);">Admin Panel</h2>
         </div>
 
-        <!-- Point increment selector -->
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center;">
-          <p style="width:100%;text-align:center;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem;">Point value</p>
-          <button class="pt-sel active" onclick="setPtVal(5,this)">+5</button>
-          <button class="pt-sel" onclick="setPtVal(10,this)">+10</button>
-          <button class="pt-sel" onclick="setPtVal(50,this)">+50</button>
-          <button class="pt-sel" onclick="setPtVal(100,this)">+100</button>
+        <!-- GAME SCORES SECTION -->
+        <div style="margin-bottom:2rem;">
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:1rem;">🎮 Game Results</h3>
+
+          <!-- 4-team games -->
+          <p style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">4-Team Games (1st=4pts · 2nd=3pts · 3rd=2pts · 4th=0pts)</p>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.25rem;" id="fourTeamGames">
+            <div class="game-result-row" data-game="Saboora">
+              <span class="grr-label">Saboora</span>
+              <select class="grr-sel" data-pos="1" onchange="applyGameResult('Saboora',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" data-pos="2" onchange="applyGameResult('Saboora',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" data-pos="3" onchange="applyGameResult('Saboora',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" data-pos="4" onchange="applyGameResult('Saboora',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+            </div>
+            <div class="game-result-row" data-game="Top 10">
+              <span class="grr-label">Top 10</span>
+              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Top 10',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+            </div>
+            <div class="game-result-row" data-game="Higher or Lower">
+              <span class="grr-label">Higher or Lower</span>
+              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Higher or Lower',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+            </div>
+            <div class="game-result-row" data-game="Ziago">
+              <span class="grr-label">Ziago</span>
+              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">1st</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">2nd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">3rd</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+              <select class="grr-sel" onchange="applyGameResult('Ziago',this)"><option value="">4th</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+            </div>
+          </div>
+
+          <!-- 2-team blended games -->
+          <p style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">2-Team Blended Games (Winner=+2pts · Loser=0pts)</p>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;" id="twoTeamGames">
+            <div class="game-result-row" data-game="10 Bel Hob">
+              <span class="grr-label">10 Bel Hob</span>
+              <div style="display:flex;gap:0.5rem;flex:1;">
+                <div style="flex:1;text-align:center;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:3px;">WINNERS (+2pts each)</div>
+                  <div style="display:flex;gap:4px;">
+                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('10 Bel Hob','w1',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('10 Bel Hob','w2',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="game-result-row" data-game="Jeopardy">
+              <span class="grr-label">Jeopardy</span>
+              <div style="display:flex;gap:0.5rem;flex:1;">
+                <div style="flex:1;text-align:center;">
+                  <div style="font-size:9px;color:var(--muted);margin-bottom:3px;">WINNERS (+2pts each)</div>
+                  <div style="display:flex;gap:4px;">
+                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('Jeopardy','w1',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+                    <select class="grr-sel" style="flex:1;" onchange="applyBlendedResult('Jeopardy','w2',this)"><option value="">Team</option><option>Pink</option><option>Yellow</option><option>Blue</option><option>Green</option></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="saveAllGameResults()" style="margin-top:1rem;width:100%;background:var(--gold);color:#0D0C0A;border:none;border-radius:10px;padding:0.85rem;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">💾 Save Game Results</button>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.5rem 0;">
+
+        <!-- CHALLENGES SECTION -->
+        <div style="margin-bottom:2rem;">
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.5rem;">🏅 Challenge Rewards</h3>
+          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem;">Click a player to award a challenge. Max +4 bonus pts per team total. Bahareya: 1 winner · Race: 3 winners · Outfit: 3 winners.</p>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;" id="challengeButtons">
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+              <button class="ch-btn active-ch" onclick="setChallengeMode('bahareya')" id="chbtn-bahareya">🏃 Bahareya (+2)</button>
+              <button class="ch-btn" onclick="setChallengeMode('outfit')" id="chbtn-outfit">👗 Best Outfit (+2)</button>
+              <button class="ch-btn" onclick="setChallengeMode('race')" id="chbtn-race">🏁 The Race (+2)</button>
+              <button class="ch-btn" onclick="setChallengeMode('codered')" id="chbtn-codered">🔴 Code Red (+1)</button>
+              <button class="ch-btn" onclick="setChallengeMode('ersem')" id="chbtn-ersem">👶 Ersem Dehka (+1)</button>
+            </div>
+            <div id="chModeLabel" style="font-size:0.78rem;color:var(--gold);padding:0.3rem 0;">Selected: Bahareya — click a player to award</div>
+          </div>
         </div>
 
         <!-- Teams + players -->
@@ -1457,7 +1535,142 @@
     }
   }
 
-  function renderAdmin() {
+  
+  // ── SCORING CONSTANTS ──
+  const GAME_PTS = { 1:4, 2:3, 3:2, 4:0 };
+  const BLENDED_WIN_PTS = 2;
+  const CHALLENGE_PTS = { bahareya:2, outfit:2, race:2, codered:1, ersem:1 };
+  const CHALLENGE_MAX_WINNERS = { bahareya:1, outfit:3, race:3, codered:99, ersem:99 };
+  const MAX_TEAM_BONUS = 4;
+
+  let gameResults = {}; // { 'Saboora': { Pink:4, Yellow:3, Blue:2, Green:0 }, ... }
+  let blendedResults = {}; // { '10 Bel Hob': { w1:'Pink', w2:'Yellow' }, ... }
+  let challengeMode = 'bahareya';
+  let challengeWinners = { bahareya:[], outfit:[], race:[], codered:[], ersem:[] };
+
+  function setChallengeMode(ch) {
+    challengeMode = ch;
+    document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active-ch'));
+    document.getElementById('chbtn-' + ch).classList.add('active-ch');
+    const labels = { bahareya:'Bahareya (+2) — max 1 winner', outfit:'Best Outfit (+2) — max 3 winners', race:'The Race (+2) — max 3 winners', codered:'Code Red (+1) — unlimited', ersem:'Ersem Dehka (+1) — unlimited' };
+    document.getElementById('chModeLabel').textContent = 'Selected: ' + labels[ch] + ' — click a player to award';
+  }
+
+  function applyGameResult(game, sel) {
+    const pos = parseInt(sel.dataset.pos || sel.options[sel.selectedIndex].text.match(/\d/)?.[0] || 0);
+    // pos is encoded in option text "1st" etc
+    const posMap = {'1st':1,'2nd':2,'3rd':3,'4th':4};
+    const posNum = posMap[sel.options[0].text] || 1;
+    if (!gameResults[game]) gameResults[game] = {};
+    if (sel.value) gameResults[game][sel.value] = GAME_PTS[posNum];
+  }
+
+  function applyBlendedResult(game, slot, sel) {
+    if (!blendedResults[game]) blendedResults[game] = {};
+    blendedResults[game][slot] = sel.value;
+  }
+
+  async function saveAllGameResults() {
+    // Build team_bonus from game results + challenge winners
+    const teamBonus = {Pink:0, Yellow:0, Blue:0, Green:0};
+
+    // 4-team games: read all selects
+    document.querySelectorAll('#fourTeamGames .game-result-row').forEach(row => {
+      const game = row.dataset.game;
+      const sels = row.querySelectorAll('.grr-sel');
+      const pts = [4,3,2,0];
+      sels.forEach((sel, i) => {
+        if (sel.value) teamBonus[sel.value] = (teamBonus[sel.value]||0) + pts[i];
+      });
+    });
+
+    // 2-team blended games
+    document.querySelectorAll('#twoTeamGames .game-result-row').forEach(row => {
+      const sels = row.querySelectorAll('.grr-sel');
+      sels.forEach(sel => {
+        if (sel.value) teamBonus[sel.value] = (teamBonus[sel.value]||0) + BLENDED_WIN_PTS;
+      });
+    });
+
+    // Challenge bonuses (already stored in player bonus_points via awardChallenge)
+    // team_bonus only stores game points
+    const TEAM_NAME_TO_ID = {Pink:1, Yellow:2, Blue:3, Green:4};
+
+    for (const [name, pts] of Object.entries(teamBonus)) {
+      const tid = TEAM_NAME_TO_ID[name];
+      if (!tid) continue;
+      try {
+        await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
+          method: 'PATCH',
+          headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ team_bonus: pts })
+        });
+      } catch(e) { console.error('Save team bonus failed', e); }
+    }
+
+    await loadAdmin();
+    alert('Game results saved! ✓');
+  }
+
+  async function awardChallenge(playerId) {
+    const ch = challengeMode;
+    const pts = CHALLENGE_PTS[ch];
+    const maxW = CHALLENGE_MAX_WINNERS[ch];
+
+    // Check winner count for this challenge
+    if (challengeWinners[ch].includes(playerId)) {
+      alert('This player already received this challenge reward.');
+      return;
+    }
+    if (ch === 'bahareya' && challengeWinners.bahareya.length >= 1) {
+      alert('Bahareya only has 1 winner.');
+      return;
+    }
+    if ((ch === 'outfit' || ch === 'race') && challengeWinners[ch].length >= 3) {
+      alert(ch === 'outfit' ? 'Best Outfit only has 3 winners.' : 'The Race only has 3 winners.');
+      return;
+    }
+
+    // Find player and their team
+    const p = adminData.players.find(pl => pl.id === playerId);
+    if (!p) return;
+
+    // Check team bonus cap
+    const teamPlayers = adminData.players.filter(pl => pl.team === p.team);
+    const teamChallengeBonus = teamPlayers.reduce((s, pl) => s + (pl.challenge_bonus||0), 0);
+    const teamObj = adminData.teams.find(t => t.id === p.team);
+
+    if (teamChallengeBonus + pts > MAX_TEAM_BONUS) {
+      const remaining = MAX_TEAM_BONUS - teamChallengeBonus;
+      if (remaining <= 0) {
+        alert('This team has reached the max +4 challenge bonus cap.');
+        return;
+      }
+      // Award partial
+      const actual = remaining;
+      p.challenge_bonus = (p.challenge_bonus||0) + actual;
+      p.bonus_points = (p.bonus_points||0) + actual;
+    } else {
+      p.challenge_bonus = (p.challenge_bonus||0) + pts;
+      p.bonus_points = (p.bonus_points||0) + pts;
+    }
+
+    challengeWinners[ch].push(playerId);
+
+    // Save to DB
+    try {
+      await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${playerId}`, {
+        method: 'PATCH',
+        headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ bonus_points: p.bonus_points })
+      });
+    } catch(e) { console.error('Save challenge failed', e); }
+
+    renderAdmin();
+    renderAdminTotals();
+  }
+
+function renderAdmin() {
     const TEAM_META = { 1:{name:'Pink',color:'#E91E8C'}, 2:{name:'Yellow',color:'#F5C518'}, 3:{name:'Blue',color:'#4A90D9'}, 4:{name:'Green',color:'#3DBA7A'} };
     const el = document.getElementById('adminTeams');
     el.innerHTML = [1,2,3,4].map(tid => {
@@ -1471,12 +1684,11 @@
         const av = p.avatar_url
           ? `<img class="admin-player-avatar" src="${p.avatar_url}" onerror="this.style.display='none'">`
           : `<div class="admin-player-fallback" style="background:${meta.color};color:${tid===2||tid===3?'#0D0C0A':'#fff'}">${ini}</div>`;
-        return `<div class="admin-player-row">
+        const chWon = Object.entries(challengeWinners).filter(([ch,ws]) => ws.includes(p.id)).map(([ch])=>ch).join(', ');
+        return `<div class="admin-player-row" style="cursor:pointer;" onclick="awardChallenge('${p.id}')">
           ${av}
-          <span class="admin-player-name">${p.name}</span>
-          <button class="admin-pts-btn minus" onclick="adjustPlayer('${p.id}',-1)">−</button>
-          <span class="admin-pts-val" id="pp-${p.id}">${p.bonus_points||0}</span>
-          <button class="admin-pts-btn plus" onclick="adjustPlayer('${p.id}',1)">+</button>
+          <span class="admin-player-name">${p.name}${chWon ? `<span style="font-size:9px;color:var(--gold);display:block;">${chWon}</span>` : ''}</span>
+          <span class="admin-pts-val" id="pp-${p.id}" style="color:${meta.color}">${p.bonus_points||0} pts</span>
         </div>`;
       }).join('') : '<p style="padding:0.75rem 1.1rem;font-size:0.8rem;color:var(--muted)">No players yet</p>';
 
