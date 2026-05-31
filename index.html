@@ -659,34 +659,64 @@
 
         <!-- GAMES SECTION -->
         <div style="margin-bottom:2rem;">
-          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.75rem;">🎮 Games</h3>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;" id="gamesGrid">
-            <button class="game-result-card" onclick="openGamePopup('saboora')">
-              <span class="grc-name">Saboora</span>
-              <span class="grc-status" id="grc-saboora">Not set</span>
-            </button>
-            <button class="game-result-card" onclick="openGamePopup('top10')">
-              <span class="grc-name">Top 10</span>
-              <span class="grc-status" id="grc-top10">Not set</span>
-            </button>
-            <button class="game-result-card" onclick="openGamePopup('hol')">
-              <span class="grc-name">Higher or Lower</span>
-              <span class="grc-status" id="grc-hol">Not set</span>
-            </button>
-            <button class="game-result-card" onclick="openGamePopup('ziago')">
-              <span class="grc-name">Ziago</span>
-              <span class="grc-status" id="grc-ziago">Not set</span>
-            </button>
-            <button class="game-result-card" onclick="openGamePopup('hob')">
-              <span class="grc-name">10 Bel Hob</span>
-              <span class="grc-status grc-blended" id="grc-hob">Not set</span>
-            </button>
-            <button class="game-result-card" onclick="openGamePopup('jeopardy')">
-              <span class="grc-name">Jeopardy</span>
-              <span class="grc-status grc-blended" id="grc-jeopardy">Not set</span>
-            </button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);letter-spacing:0.08em;margin:0;">🎮 Games</h3>
+            <button onclick="resetLeaderboard()" style="background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.4);color:#FF4444;border-radius:8px;padding:0.35rem 0.85rem;font-family:'Cairo',sans-serif;font-size:0.75rem;cursor:pointer;">🗑 Reset All</button>
           </div>
-        </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;" id="gamesGrid">
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('saboora')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-saboora"></span>Saboora</span><span class="grc-status" id="grc-saboora"></span></button>
+              <button onclick="deleteGameResult('saboora')" class="grc-del">↺</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('top10')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-top10"></span>Top 10</span><span class="grc-status" id="grc-top10"></span></button>
+              <button onclick="deleteGameResult('top10')" class="grc-del">↺</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('hol')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-hol"></span>Higher or Lower</span><span class="grc-status" id="grc-hol"></span></button>
+              <button onclick="deleteGameResult('hol')" class="grc-del">↺</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('ziago')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-ziago"></span>Ziago</span><span class="grc-status" id="grc-ziago"></span></button>
+              <button onclick="deleteGameResult('ziago')" class="grc-del">↺</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('hob')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-hob"></span>10 Bel Hob</span><span class="grc-status" id="grc-hob"></span></button>
+              <button onclick="deleteGameResult('hob')" class="grc-del">↺</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="game-result-card" onclick="openGamePopup('jeopardy')" style="flex:1;"><span class="grc-name"><span class="grc-dot" id="grc-dot-jeopardy"></span>Jeopardy</span><span class="grc-status" id="grc-jeopardy"></span></button>
+              <button onclick="deleteGameResult('jeopardy')" class="grc-del">↺</button>
+            </div>
+          </div>
+          </div>
+
+          <!-- Manual team score adjust -->
+          <div style="margin-top:0.85rem;">
+            <p style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Manual Score Adjust</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;" id="manualScoreGrid">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,107,157,0.2);border-radius:10px;padding:0.5rem 0.75rem;display:flex;align-items:center;gap:0.4rem;">
+                <span style="flex:1;font-size:0.78rem;font-weight:600;color:#FF6B9D;" id="msc-1">Pink — 0</span>
+                <button onclick="manualAdjTeam(1,-1)" style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.3);color:#FF4444;border-radius:6px;width:26px;height:26px;cursor:pointer;">−</button>
+                <button onclick="manualAdjTeam(1,1)" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);color:#4ECDC4;border-radius:6px;width:26px;height:26px;cursor:pointer;">+</button>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(245,197,24,0.2);border-radius:10px;padding:0.5rem 0.75rem;display:flex;align-items:center;gap:0.4rem;">
+                <span style="flex:1;font-size:0.78rem;font-weight:600;color:#F5C518;" id="msc-2">Yellow — 0</span>
+                <button onclick="manualAdjTeam(2,-1)" style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.3);color:#FF4444;border-radius:6px;width:26px;height:26px;cursor:pointer;">−</button>
+                <button onclick="manualAdjTeam(2,1)" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);color:#4ECDC4;border-radius:6px;width:26px;height:26px;cursor:pointer;">+</button>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(74,144,217,0.2);border-radius:10px;padding:0.5rem 0.75rem;display:flex;align-items:center;gap:0.4rem;">
+                <span style="flex:1;font-size:0.78rem;font-weight:600;color:#4A90D9;" id="msc-3">Blue — 0</span>
+                <button onclick="manualAdjTeam(3,-1)" style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.3);color:#FF4444;border-radius:6px;width:26px;height:26px;cursor:pointer;">−</button>
+                <button onclick="manualAdjTeam(3,1)" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);color:#4ECDC4;border-radius:6px;width:26px;height:26px;cursor:pointer;">+</button>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(61,186,122,0.2);border-radius:10px;padding:0.5rem 0.75rem;display:flex;align-items:center;gap:0.4rem;">
+                <span style="flex:1;font-size:0.78rem;font-weight:600;color:#3DBA7A;" id="msc-4">Green — 0</span>
+                <button onclick="manualAdjTeam(4,-1)" style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.3);color:#FF4444;border-radius:6px;width:26px;height:26px;cursor:pointer;">−</button>
+                <button onclick="manualAdjTeam(4,1)" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);color:#4ECDC4;border-radius:6px;width:26px;height:26px;cursor:pointer;">+</button>
+              </div>
+            </div>
+          </div>
 
         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.25rem 0;">
 
@@ -731,6 +761,8 @@
             </div>
           </div>
         </div>
+
+      </div><!-- /adminUnlocked -->
 
     </section>
   </div><!-- /tab-admin -->
@@ -1512,6 +1544,7 @@
       adminData.players = await playersRes.json();
       adminData.teams   = await teamsRes.json();
       renderAdmin();
+      updateGameCards();
     } catch(e) {
       document.getElementById('adminTeams').innerHTML = '<div class="loading-row" style="color:var(--red)">Could not load data</div>';
     }
@@ -1528,7 +1561,9 @@
   const CHALLENGE_MAX = {bahareya:1,outfit:3,race:3,codered:99,ersem:99};
   const MAX_TEAM_BONUS = 4;
 
-  let savedGameResults = {}; // { saboora: {Pink:4,Yellow:3,Blue:2,Green:0}, ... }
+  // Load persisted game results
+  let savedGameResults = {};
+  try { savedGameResults = JSON.parse(localStorage.getItem('bob_game_results') || '{}'); } catch(e) {}
   let challengeWinners = {bahareya:[],outfit:[],race:[],codered:[],ersem:[]};
   let currentGamePopup = null;
   let bonusTargetPlayerId = null;
@@ -1592,23 +1627,27 @@
   }
 
   function updateGameCards() {
-    const keys = {saboora:'saboora',top10:'top10',hol:'hol',ziago:'ziago',hob:'hob',jeopardy:'jeopardy'};
-    Object.entries(keys).forEach(([k,id]) => {
-      const el = document.getElementById('grc-'+id);
-      if (!el) return;
+    const keys = ['saboora','top10','hol','ziago','hob','jeopardy'];
+    keys.forEach(k => {
+      const dot = document.getElementById('grc-dot-'+k);
+      const lbl = document.getElementById('grc-'+k);
       const r = savedGameResults[k];
-      if (!r) { el.textContent = 'Not set'; el.className = 'grc-status'; return; }
-      if (r.winners) {
-        el.textContent = '✓ '+r.winners.join(' + ')+' won';
-      } else if (r.ranks) {
-        const top = r.ranks['1st'];
-        el.textContent = top ? '✓ '+top+' 1st' : 'Partial';
+      if (!r) {
+        if (dot) { dot.className = 'grc-dot'; }
+        if (lbl) lbl.textContent = '';
+        return;
       }
-      el.className = 'grc-status grc-done';
+      if (dot) dot.className = 'grc-dot done';
+      if (lbl) {
+        if (r.winners) lbl.textContent = r.winners.join(' & ');
+        else if (r.ranks) lbl.textContent = r.ranks['1st'] ? r.ranks['1st']+' 1st' : '';
+      }
     });
   }
 
   async function recalcAndSaveGameBonus() {
+    // Persist game results
+    try { localStorage.setItem('bob_game_results', JSON.stringify(savedGameResults)); } catch(e) {}
     // Calculate game pts per team
     const pts = {Pink:0,Yellow:0,Blue:0,Green:0};
     const order = [4,3,2,0];
@@ -1643,56 +1682,177 @@
   }
 
   // ── BONUS POPUP ──
-  function openBonusPopup(playerId) {
-    bonusTargetPlayerId = playerId;
-    const p = adminData.players.find(p=>p.id===playerId);
-    if (!p) return;
-    document.getElementById('bonusPopupName').textContent = p.name;
-    document.getElementById('bonusChallengeSelect').value = '';
-    document.getElementById('bonusPopupOverlay').style.display = 'flex';
-  }
 
   function closeBonusPopup() {
     document.getElementById('bonusPopupOverlay').style.display = 'none';
     bonusTargetPlayerId = null;
   }
 
+  // ── RESET LEADERBOARD ──
+  async function resetLeaderboard() {
+    if (!confirm('Reset ALL scores and bonuses to 0? This cannot be undone.')) return;
+    // Reset all player bonus_points
+    for (const p of adminData.players) {
+      p.bonus_points = 0;
+      p.challenge_bonus = 0;
+      try {
+        await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${p.id}`, {
+          method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+          body: JSON.stringify({bonus_points:0})
+        });
+      } catch(e) { console.error(e); }
+    }
+    // Reset all team_bonus
+    for (let tid = 1; tid <= 4; tid++) {
+      try {
+        await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
+          method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+          body: JSON.stringify({team_bonus:0})
+        });
+        const t = adminData.teams.find(t=>t.id===tid);
+        if (t) t.team_bonus = 0;
+      } catch(e) { console.error(e); }
+    }
+    // Clear local state
+    savedGameResults = {};
+    try { localStorage.removeItem('bob_game_results'); } catch(e) {}
+    challengeWinners = {bahareya:[],outfit:[],race:[],codered:[],ersem:[]};
+    manualAdj = {1:0,2:0,3:0,4:0};
+    updateGameCards();
+    renderAdmin();
+    renderAdminTotals();
+    updateManualScoreDisplay();
+  }
+
+  // ── DELETE SINGLE GAME ──
+  async function deleteGameResult(key) {
+    if (!confirm('Reset this game result?')) return;
+    delete savedGameResults[key];
+    try { localStorage.setItem('bob_game_results', JSON.stringify(savedGameResults)); } catch(e) {}
+    await recalcAndSaveGameBonus();
+    updateGameCards();
+    renderAdminTotals();
+  }
+
+  // ── MANUAL TEAM ADJ ──
+  let manualAdj = {1:0,2:0,3:0,4:0};
+
+  async function manualAdjTeam(tid, dir) {
+    manualAdj[tid] = (manualAdj[tid]||0) + dir;
+    // Save as extra team_bonus on top of game points
+    // Get current game bonus
+    const gamePts = getGameBonusForTeam(tid);
+    const total = gamePts + manualAdj[tid];
+    try {
+      await fetch(`${SB_URL}/rest/v1/teams?id=eq.${tid}`, {
+        method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+        body: JSON.stringify({team_bonus: Math.max(0, total)})
+      });
+      const t = adminData.teams.find(t=>t.id===tid);
+      if (t) t.team_bonus = Math.max(0, total);
+    } catch(e) { console.error(e); }
+    renderAdminTotals();
+    updateManualScoreDisplay();
+  }
+
+  function getGameBonusForTeam(tid) {
+    const nameMap = {1:'Pink',2:'Yellow',3:'Blue',4:'Green'};
+    const name = nameMap[tid];
+    let pts = 0;
+    const order = [4,3,2,0];
+    ['saboora','top10','hol','ziago'].forEach(k => {
+      const r = savedGameResults[k];
+      if (!r||!r.ranks) return;
+      ['1st','2nd','3rd','4th'].forEach((pos,i) => { if (r.ranks[pos]===name) pts+=order[i]; });
+    });
+    ['hob','jeopardy'].forEach(k => {
+      const r = savedGameResults[k];
+      if (!r||!r.winners) return;
+      if (r.winners.includes(name)) pts+=2;
+    });
+    return pts;
+  }
+
+  function updateManualScoreDisplay() {
+    const colors = {1:'#FF6B9D',2:'#F5C518',3:'#4A90D9',4:'#3DBA7A'};
+    const names = {1:'Pink',2:'Yellow',3:'Blue',4:'Green'};
+    [1,2,3,4].forEach(tid => {
+      const el = document.getElementById('msc-'+tid);
+      if (!el) return;
+      const adj = manualAdj[tid]||0;
+      el.textContent = `${names[tid]}${adj!==0?' ('+( adj>0?'+':'')+adj+')':''}`;
+    });
+  }
+
+  // ── REMOVE CHALLENGE BONUS ──
+  // Updated confirmBonusAward to handle "remove" when player already has this challenge
   async function confirmBonusAward() {
     const ch = document.getElementById('bonusChallengeSelect').value;
-    if (!ch) { alert('Please select a challenge.'); return; }
+    if (!ch) { closeBonusPopup(); return; }
     const playerId = bonusTargetPlayerId;
     const p = adminData.players.find(pl=>pl.id===playerId);
     if (!p) return;
+
+    // If player already has this challenge — REMOVE it
+    if (challengeWinners[ch].includes(playerId)) {
+      const pts = CHALLENGE_PTS[ch];
+      challengeWinners[ch] = challengeWinners[ch].filter(id=>id!==playerId);
+      p.challenge_bonus = Math.max(0,(p.challenge_bonus||0)-pts);
+      p.bonus_points = Math.max(0,(p.bonus_points||0)-pts);
+      try {
+        await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${playerId}`, {
+          method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
+          body: JSON.stringify({bonus_points:p.bonus_points})
+        });
+      } catch(e) { console.error(e); }
+      closeBonusPopup();
+      renderAdmin();
+      renderAdminTotals();
+      return;
+    }
+
     let pts = CHALLENGE_PTS[ch];
-    const maxW = CHALLENGE_MAX[ch];
-
-    // Check winner count
-    if (challengeWinners[ch].includes(playerId)) { alert('This player already received this challenge.'); return; }
     if (ch==='bahareya' && challengeWinners.bahareya.length>=1) { alert('Bahareya only has 1 winner.'); return; }
-    if ((ch==='outfit'||ch==='race') && challengeWinners[ch].length>=3) { alert('Only 3 winners allowed for this challenge.'); return; }
+    if ((ch==='outfit'||ch==='race') && challengeWinners[ch].length>=3) { alert('Only 3 winners for this challenge.'); return; }
 
-    // Check team cap
     const teamPlayers = adminData.players.filter(pl=>pl.team===p.team);
     const teamChallengeTotal = teamPlayers.reduce((s,pl)=>s+(pl.challenge_bonus||0),0);
     const remaining = MAX_TEAM_BONUS - teamChallengeTotal;
-    if (remaining <= 0) { alert('This team has reached the +4 challenge bonus cap.'); return; }
+    if (remaining <= 0) { alert('This team hit the +4 challenge cap.'); return; }
     pts = Math.min(pts, remaining);
 
-    p.challenge_bonus = (p.challenge_bonus||0) + pts;
-    p.bonus_points = (p.bonus_points||0) + pts;
+    p.challenge_bonus = (p.challenge_bonus||0)+pts;
+    p.bonus_points = (p.bonus_points||0)+pts;
     challengeWinners[ch].push(playerId);
 
-    // Save to DB
     try {
       await fetch(`${SB_URL}/rest/v1/rsvps?id=eq.${playerId}`, {
         method:'PATCH', headers:{...HEADERS,'Prefer':'return=minimal'},
-        body: JSON.stringify({bonus_points: p.bonus_points})
+        body: JSON.stringify({bonus_points:p.bonus_points})
       });
     } catch(e) { console.error(e); }
 
     closeBonusPopup();
     renderAdmin();
     renderAdminTotals();
+  }
+
+  // Update bonus popup to show current status
+  function openBonusPopup(playerId) {
+    bonusTargetPlayerId = playerId;
+    const p = adminData.players.find(p=>p.id===playerId);
+    if (!p) return;
+    document.getElementById('bonusPopupName').textContent = p.name;
+    const sel = document.getElementById('bonusChallengeSelect');
+    sel.value = '';
+    // Update option labels to show if already awarded
+    Array.from(sel.options).forEach(opt => {
+      if (!opt.value) return;
+      const hasIt = challengeWinners[opt.value]?.includes(playerId);
+      opt.text = opt.text.replace(' ✓','').replace(' [remove]','');
+      if (hasIt) opt.text += ' ✓ [select to remove]';
+    });
+    document.getElementById('bonusPopupOverlay').style.display = 'flex';
   }
 
 
@@ -1704,6 +1864,7 @@
       const header = document.querySelector(`#tp-${tid}`)?.closest('.admin-team-block')?.querySelector('.admin-team-total');
       if (header) header.textContent = total + ' pts';
     });
+    updateManualScoreDisplay();
   }
 
   function dismissQuizModal() {
